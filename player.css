@@ -16,9 +16,11 @@
     height: 100px;
     animation-name: peak;
     animation-duration: 10s;
+    animation-play-state: paused;
     position: absolute;
     overflow: hidden;
     right: -1px;
+    margin-right: -100%;
 }
 
 .yttc-comment .profile-image {
@@ -49,7 +51,7 @@
         opacity: 1;
     }
     100% {
-        margin-right: -100%;
+        margin-right: 0;
         opacity: 0;
     }
 }

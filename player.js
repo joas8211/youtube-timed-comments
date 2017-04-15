@@ -19,10 +19,13 @@ function showComment(comment) {
             + '<p class="content">' + comment.textDisplay + '</p>';
         element.style.top = (110 * spot) + "px";
         container.appendChild(element);
-        setTimeout(function () {
-            spots.splice(spots.indexOf(spot), 1);
-            element.remove();
-        }, 10000);
+        element.querySelector(".profile-image").addEventListener("load", function () {
+            element.style.animationPlayState = "running";
+            setTimeout(function () {
+                spots.splice(spots.indexOf(spot), 1);
+                element.remove();
+            }, 10000);
+        });
     }
 }
 
