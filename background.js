@@ -57,7 +57,9 @@ function fetchComments(videoID, cb) {
                                 timestamps.push(seconds);
                             });
                             comment.timestamps = timestamps;
-                            comments.push(comment);
+                            if (comments.indexOf(comment) == -1) {
+                                comments.push(comment);
+                            }
                         }
                     });
                     count--;
