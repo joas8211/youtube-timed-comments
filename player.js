@@ -23,10 +23,6 @@ function showComment(comment) {
             spots.splice(spots.indexOf(spot), 1);
             element.remove();
         }, 10000);
-    } else {
-        setTimeout(function () {
-            showComment(comment);
-        }, 1000);
     }
 }
 
@@ -65,20 +61,6 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
         );
     }
 
-    document.querySelector("#player video").addEventListener("canplay", function () {
-        comments = {};
-        var videoID = location.search.match(/v=([^&]+)(&|$)/)[1];
-        chrome.runtime.sendMessage({action: "FETCH_COMMENTS", videoID: videoID}, function (items) {
-            for (var id in items) {
-                var comment = items[id];
-                comment.timestamps.forEach(function (timestamp) {
-                    if (typeof comments[timestamp] == "undefined") comments[timestamp] = [];
-                    comments[timestamp].push(comment);
-                });
-            }
-        });
-    });
-
     var previousTime = 0;
     document.querySelector("#player video").addEventListener("timeupdate", function () {
         var currentTime = Math.round(this.currentTime);
@@ -88,5 +70,24 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
             });
         }
         previousTime = currentTime;
+    });
+
+    var previousVideo = null;
+    document.querySelector("#player video").addEventListener("canplay", function () {
+        var videoID = location.search.match(/v=([^&]+)(&|$)/)[1];
+        if (videoID != previousVideo) {
+            previousVideo = videoID;
+            comments = {};
+        
+            chrome.runtime.sendMessage({action: "FETCH_COMMENTS", videoID: videoID}, function (items) {
+                for (var id in items) {
+                    var comment = items[id];
+                    comment.timestamps.forEach(function (timestamp) {
+                        if (typeof comments[timestamp] == "undefined") comments[timestamp] = [];
+                        comments[timestamp].push(comment);
+                    });
+                }
+            });
+        }
     });
 });
