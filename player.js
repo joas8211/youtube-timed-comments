@@ -30,7 +30,27 @@ function showComment(comment) {
     }
 }
 
-setTimeout(function () {
+function waitUntilAvailable(parent, target, callback) {
+    if (document.querySelector(target) != null) {
+        callback();
+    } else {
+        var observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                mutation.addedNodes.forEach(function (node) {
+                    if (node.matches(target)) {
+                        observer.disconnect();
+                        callback();
+                    }
+                });
+            });
+        });
+        observer.observe(document.querySelector(parent), {
+            childList: true
+        });
+    }
+}
+
+waitUntilAvailable("#player-api", "#movie_player", function () {
     var container = document.createElement("div");
     container.id = "yttc-container";
     document.querySelector("#movie_player").appendChild(container);
@@ -49,12 +69,13 @@ setTimeout(function () {
         comments = {};
         var videoID = location.search.match(/v=([^&]+)(&|$)/)[1];
         chrome.runtime.sendMessage({action: "FETCH_COMMENTS", videoID: videoID}, function (items) {
-            items.forEach(function (comment) {
+            for (var id in items) {
+                var comment = items[id];
                 comment.timestamps.forEach(function (timestamp) {
                     if (typeof comments[timestamp] == "undefined") comments[timestamp] = [];
                     comments[timestamp].push(comment);
                 });
-            });
+            }
         });
     });
 
@@ -68,4 +89,4 @@ setTimeout(function () {
         }
         previousTime = currentTime;
     });
-}, 250);
+});

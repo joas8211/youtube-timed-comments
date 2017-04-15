@@ -6,6 +6,7 @@
     z-index: 11;
     max-width: 40%;
     width: 400px;
+    pointer-events: none;
 }
 
 .yttc-comment {
