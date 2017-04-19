@@ -90,6 +90,43 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
                         comments[timestamp].push(comment);
                     });
                 }
+                var limit = options.hasOwnProperty("limit") ? options.limit : 5;
+                var noLists = options.hasOwnProperty("no_lists") ? options.no_lists : true;
+                if (noLists) {
+                    for (var timestamp in comments) {
+                        comments[timestamp].forEach(function (comment, i) {
+                            if (comment.timestamps.length >= 3) {
+                                comments[timestamp].splice(i, 1);
+                            }
+                        });
+                    }
+                }
+                var start = parseInt(Object.keys(comments)[0]);
+                var end = parseInt(Object.keys(comments).pop());
+                var duration = 10;
+                while (start <= end) {
+                    var queue = [];
+                    for (var time = start; time <= start + duration; time++) {
+                        if (comments.hasOwnProperty(time)) {
+                            comments[time].forEach(function (comment, i) {
+                                queue.push({
+                                    likeCount: comment.likeCount,
+                                    timestamp: time, 
+                                    index: i
+                                });
+                            });
+                        }
+                    }
+                    if (queue.length > limit) {
+                        queue.sort(function (a, b) {
+                            return a.likeCount - b.likeCount;
+                        });
+                        queue.slice(0, queue.length - limit).forEach(function (ref) {
+                            comments[ref.timestamp].splice(ref.index, 1);
+                        });
+                    }
+                    start++;
+                }
             });
         }
     });
