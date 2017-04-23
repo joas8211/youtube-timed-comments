@@ -6,7 +6,7 @@ Time when these comments popup is determinated by timestamps in a comment (i.e. 
 ## Features
 | Feature                                                   | Option | Default  |
 | :-------------------------------------------------------- | :----: | :------: |
-| Disabling in small not-fullscreen mode                    | Yes    | Disabled |
+| Disabling in not-fullscreen mode                          | Yes    | Disabled |
 | Limiting the count of comments visible in same time       | Yes    | 5        |
 | List filter											                          | Yes    | Enabled  |
 | Remove timestamps from beginning                          | No     |          |
@@ -29,7 +29,7 @@ Otherwise the pull request will be rejected or it will hang there until a future
 7. Copy client ID to [manifest.json](../master/manifest.json)
 8. Reload the extension
 
-## To-do <a name="todo"></a>
+## To-do
 - Icons
 
 ## License
