@@ -16,7 +16,7 @@ function showComment(comment) {
         element.innerHTML = ''
             + '<img class="profile-image" src="' + comment.authorProfileImageUrl + '">'
             + '<p class="profile-name">' + comment.authorDisplayName + '</p>'
-            + '<p class="content">' + comment.textDisplay + '</p>';
+            + '<p class="content">' + comment.textView + '</p>';
         element.style.top = (110 * spot) + "px";
         container.appendChild(element);
         element.querySelector(".profile-image").addEventListener("load", function () {
@@ -84,15 +84,22 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
         
             chrome.runtime.sendMessage({action: "FETCH_COMMENTS", videoID: videoID}, function (items) {
                 var noLists = options.hasOwnProperty("no_lists") ? options.no_lists : true;
-                if (noLists) {
-                    for (var id in items) {
+                var noClockTimes = options.hasOwnProperty("no_clocktimes") ? options.no_clocktimes : true;
+                for (var id in items) {
+                    if (noLists) {
                         if (items[id].timestamps.length >= 3) {
                             delete items[id];
+                            continue;
                         }
                     }
-                }
-                for (var id in items) {
+                    if (noClockTimes) {
+                        if (/\d{1,2}:?\d{1,2}\s?(?:am|pm)/.test(items[id].textOriginal)) {
+                            delete items[id];
+                            continue;
+                        }
+                    }
                     var comment = items[id];
+                    comment.textView = /^(?:\d[\W\d]+)?([\w\W]*)$/.exec(comment.textOriginal)[1];
                     comment.timestamps.forEach(function (timestamp) {
                         if (typeof comments[timestamp] == "undefined") comments[timestamp] = [];
                         comments[timestamp].push(comment);
