@@ -83,6 +83,14 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
             comments = {};
         
             chrome.runtime.sendMessage({action: "FETCH_COMMENTS", videoID: videoID}, function (items) {
+                var noLists = options.hasOwnProperty("no_lists") ? options.no_lists : true;
+                if (noLists) {
+                    for (var id in items) {
+                        if (items[id].timestamps.length >= 3) {
+                            delete items[id];
+                        }
+                    }
+                }
                 for (var id in items) {
                     var comment = items[id];
                     comment.timestamps.forEach(function (timestamp) {
@@ -91,16 +99,6 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
                     });
                 }
                 var limit = options.hasOwnProperty("limit") ? options.limit : 5;
-                var noLists = options.hasOwnProperty("no_lists") ? options.no_lists : true;
-                if (noLists) {
-                    for (var timestamp in comments) {
-                        comments[timestamp].forEach(function (comment, i) {
-                            if (comment.timestamps.length >= 3) {
-                                comments[timestamp].splice(i, 1);
-                            }
-                        });
-                    }
-                }
                 var start = parseInt(Object.keys(comments)[0]);
                 var end = parseInt(Object.keys(comments).pop());
                 var duration = 10;
