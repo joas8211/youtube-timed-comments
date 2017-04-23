@@ -8,17 +8,16 @@ Time when these comments popup is determinated by timestamps in a comment (i.e. 
 | :-------------------------------------------------------- | :----: | :------: |
 | Disabling in small not-fullscreen mode                    | Yes    | Disabled |
 | Limiting the count of comments visible in same time       | Yes    | 5        |
-| List filter											    | Yes    | Enabled  |
+| List filter											                          | Yes    | Enabled  |
 | Remove timestamps from beginning                          | No     |          |
 
 ## Contributing
-You can contribute coding through [pull requests](pulls) or report bugs / suggest a feature through in the [issues section](issues).
+You can contribute coding through [pull requests](https://github.com/joas8211/youtube-timed-comments/pulls) or report bugs / suggest a feature through in the [issues section](https://github.com/joas8211/youtube-timed-comments/issues).
 
 ### Guidelines
 Theres only one limitation in contributing through pull requests.
-When adding a new **feature** it must be approved by the author if it isn't included in the [to-do list](#todo).
+When adding a new **feature** it must be approved by the author if it isn't included in the to-do list.
 Otherwise the pull request will be rejected or it will hang there until a future examination.
-Fixes 
 
 ### How to get started?
 1. Clone the repository
@@ -27,11 +26,11 @@ Fixes
 4. Create a development project in [Google Developer Console](https://console.developers.google.com/)
 5. Enable YouTube Data API v3
 6. Create Chrome App OAuth client ID with copied Application ID in [credentials page](https://console.developers.google.com/apis/credentials)
-7. Copy client ID to [manifest.json](../blob/master/LICENSE)
+7. Copy client ID to [manifest.json](../master/manifest.json)
 8. Reload the extension
 
 ## To-do <a name="todo"></a>
 - Icons
 
 ## License
-[MIT](../blob/master/LICENSE)
+[MIT](../master/LICENSE)
