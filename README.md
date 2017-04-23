@@ -3,6 +3,8 @@
 Youtube Timed Comments is a Chrome extension for showing comments in a corner of a Youtube video.
 Time when these comments popup is determinated by timestamps in a comment (i.e. 12:34).
 
+You can download the latest release straight from [Chrome Web Store](https://chrome.google.com/webstore/detail/youtube-timed-comments/mlljpeldlfcdmmailijkjokfenhcnolp).
+
 ## Features
 | Feature                                                   | Option | Default  |
 | :-------------------------------------------------------- | :----: | :------: |
