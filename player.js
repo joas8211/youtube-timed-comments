@@ -85,7 +85,10 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
             chrome.runtime.sendMessage({action: "FETCH_COMMENTS", videoID: videoID}, function (items) {
                 var noLists = options.hasOwnProperty("no_lists") ? options.no_lists : true;
                 var noClockTimes = options.hasOwnProperty("no_clocktimes") ? options.no_clocktimes : true;
+                var commentTexts = [];
                 for (var id in items) {
+                    var comment = items[id];
+                    comment.textView = /^(?:\d[\W\d]+)?([\w\W]*)$/.exec(comment.textOriginal)[1];
                     if (noLists) {
                         if (items[id].timestamps.length >= 3) {
                             delete items[id];
@@ -98,13 +101,24 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
                             continue;
                         }
                     }
-                    var comment = items[id];
-                    comment.textView = /^(?:\d[\W\d]+)?([\w\W]*)$/.exec(comment.textOriginal)[1];
+                    if (/^\s*$/.test(comment.textView)) {
+                        // Empty
+                        delete items[id];
+                        continue;
+                    }
+                    console.log(commentTexts.indexOf(comment.textOriginal));
+                    if (commentTexts.indexOf(comment.textOriginal) > -1) {
+                        // Duplicate
+                        delete items[id];
+                        continue;
+                    }
+                    commentTexts.push(comment.textOriginal);
                     comment.timestamps.forEach(function (timestamp) {
                         if (typeof comments[timestamp] == "undefined") comments[timestamp] = [];
                         comments[timestamp].push(comment);
                     });
                 }
+                console.log(commentTexts);
                 var limit = options.hasOwnProperty("limit") ? options.limit : 5;
                 var start = parseInt(Object.keys(comments)[0]);
                 var end = parseInt(Object.keys(comments).pop());

@@ -10,8 +10,10 @@ You can download the latest release straight from [Chrome Web Store](https://chr
 | :-------------------------------------------------------- | :----: | :------: |
 | Disabling in not-fullscreen mode                          | Yes    | Disabled |
 | Limiting the count of comments visible in same time       | Yes    | 5        |
-| List filter											                          | Yes    | Enabled  |
+| List filter											    | Yes    | Enabled  |
 | Remove timestamps from beginning                          | No     |          |
+| Empty comment filter                                      | No     |          |
+| Duplicate filter                                          | No     |          |
 
 ## Contributing
 You can contribute coding through [pull requests](https://github.com/joas8211/youtube-timed-comments/pulls) or report bugs / suggest a feature through in the [issues section](https://github.com/joas8211/youtube-timed-comments/issues).

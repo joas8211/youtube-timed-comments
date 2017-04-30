@@ -57,7 +57,9 @@ function fetchComments(videoID, cb) {
                                     seconds += parseInt(result[3]) * 60;        // minutes
                                     seconds += parseInt(result[4]);             // seconds
                                 }
-                                timestamps.push(seconds);
+                                if (timestamps.indexOf(seconds) == -1) {
+                                    timestamps.push(seconds);
+                                }
                             });
                             comment.timestamps = timestamps;
                             if (comment.authorChannelId.hasOwnProperty("value")) {
