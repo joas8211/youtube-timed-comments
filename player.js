@@ -89,11 +89,14 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
                 for (var id in items) {
                     var comment = items[id];
                     comment.textView = /^(?:\d[\W\d]+)?([\w\W]*)$/.exec(comment.textOriginal)[1];
-                    if (noLists) {
-                        if (items[id].timestamps.length >= 3) {
-                            delete items[id];
-                            continue;
-                        }
+                    if (/([\d:]+)\s*-\s*([\d:]+)/.test(comment.textOriginal) && comment.timestamps.length == 2) {
+                        // Time range
+                        // Only begining
+                        comment.timestamps = [comment.timestamps[0]];
+                    } else if (noLists && items[id].timestamps.length >= 2) {
+                        // List
+                        delete items[id];
+                        continue;
                     }
                     if (noClockTimes) {
                         if (/\d{1,2}:?\d{1,2}\s?(?:am|pm)/.test(items[id].textOriginal)) {
@@ -106,7 +109,6 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
                         delete items[id];
                         continue;
                     }
-                    console.log(commentTexts.indexOf(comment.textOriginal));
                     if (commentTexts.indexOf(comment.textOriginal) > -1) {
                         // Duplicate
                         delete items[id];
@@ -118,7 +120,6 @@ waitUntilAvailable("#player-api", "#movie_player", function () {
                         comments[timestamp].push(comment);
                     });
                 }
-                console.log(commentTexts);
                 var limit = options.hasOwnProperty("limit") ? options.limit : 5;
                 var start = parseInt(Object.keys(comments)[0]);
                 var end = parseInt(Object.keys(comments).pop());
