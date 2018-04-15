@@ -1,3 +1,7 @@
+# Depreciated!
+Current state of the project is forgotten.
+Let us hope that it will be continued in the future.
+
 # Youtube Timed Comments
 
 Youtube Timed Comments is a Chrome extension for showing comments in a corner of a Youtube video.
